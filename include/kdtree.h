@@ -33,7 +33,6 @@ static float distance2(const PointT& p1, const PointU& p2) {
 // PointT must have following property
 // unsigned int PointT::dim                   dimmension
 // T PointT::operator[](unsigned int) const   element access
-// TODO: use concept in C++20
 template <typename PointT>
 class KdTree {
  private:
@@ -264,13 +263,24 @@ class KdTree {
             list.push_back(node->idx);
         }
 
-        // if query point is lower than median, search left child
-        // else, search right child
-        const bool isLower = queryPoint[node->axis] < median[node->axis];
-        if (isLower) {
-            OrthoWindowRangeSearchNode(node->leftChild, queryPoint, width,height, list);
-        } else {
-            OrthoWindowRangeSearchNode(node->rightChild, queryPoint,width,height, list);
+        if(node->axis == 0 ) {
+            if (queryPoint[node->axis] <= median[node->axis] - width/2) {
+                OrthoWindowRangeSearchNode(node->leftChild, queryPoint, width, height, list);
+            } else if (queryPoint[node->axis] >= median[node->axis] + width/2){
+                OrthoWindowRangeSearchNode(node->rightChild, queryPoint, width, height, list);
+            } else{
+                OrthoWindowRangeSearchNode(node->leftChild, queryPoint, width, height, list);
+                OrthoWindowRangeSearchNode(node->rightChild, queryPoint, width, height, list);
+            }
+        } else{
+            if (queryPoint[node->axis] <= median[node->axis] - height/2) {
+                OrthoWindowRangeSearchNode(node->leftChild, queryPoint, width, height, list);
+            } else if (queryPoint[node->axis] >= median[node->axis] + height/2){
+                OrthoWindowRangeSearchNode(node->rightChild, queryPoint, width, height, list);
+            } else{
+                OrthoWindowRangeSearchNode(node->leftChild, queryPoint, width, height, list);
+                OrthoWindowRangeSearchNode(node->rightChild, queryPoint, width, height, list);
+            }
         }
     }
  public:
@@ -348,6 +358,9 @@ class KdTree {
         std::vector<int> ret;
         OrthoWindowRangeSearchNode(root, queryPoint, wdith,height, ret);
         return ret;
+    }
+    void showStructure() const{
+        points[root->idx];
     }
 };
 

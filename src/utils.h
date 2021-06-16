@@ -85,7 +85,7 @@ public:
         circle.setRadius(r);
     }
 
-    void setColor(const sf::Color& color) { circle.setOutlineColor(color); }
+    void setColor(const sf::Color& color) { circle.setOutlineColor(color);}
 };
 
 

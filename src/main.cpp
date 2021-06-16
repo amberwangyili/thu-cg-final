@@ -1,8 +1,3 @@
-/*
-* @File: main.cpp
-* @Date:   2021-06-16 08:50:14
-* @Last Modified time: 2021-06-16 09:16:09
-*/
 #include <kdtree.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -16,12 +11,12 @@ constexpr int _factor = 2;
 // globals
 constexpr int width = 1024*_factor;
 constexpr int height = 1024*_factor;
-int n_balls = 300*_factor*_factor;
+int n_balls = 500*_factor*_factor;
 int k = 5;
 float r = 100;
 
-float rect_width = 200;
-float rect_height = 100;
+float rect_width = 500;
+float rect_height = 300;
 std::vector<Ball> balls;
 kdtree::KdTree<Ball> tree;
 
@@ -37,15 +32,17 @@ void placeBalls() {
     tree.buildTree();
 }
 
+
 int main() {
     // create window
-    sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search");
+    sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search",sf::Style::Default);
     window.setFramerateLimit(144);
+
     ImGui::SFML::Init(window);
 
     // setup points and balls
     placeBalls();
-
+    tree.toGraphviz("../../test.gv");
     // mouse ball
     Ball mouseBall(sf::Vector2f(), r);
     mouseBall.setColor(sf::Color::Blue);
@@ -54,21 +51,23 @@ int main() {
     sf::Clock deltaClock;
     while (window.isOpen()) {
         // event handling
-        sf::Event event;
+        sf::Event event{};
         while (window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(event);
-
             if (event.type == sf::Event::Closed) window.close();
         }
 
         ImGui::SFML::Update(window, deltaClock.restart());
-
         // draw imgui
         ImGui::Begin("Parameters");
-
+        if (ImGui::Button("Refresh")) {
+            placeBalls();
+        }
+        if (ImGui::Button("Show KD-Tree Structure")) {
+            tree.showStructure();
+        }
 
         if (ImGui::InputInt("Number of balls", &n_balls)) {
-            // resetup points and balls
             placeBalls();
         }
 
@@ -77,6 +76,9 @@ int main() {
                      "Nearest Neighbor\0k-Nearest Neighbor\0Spherical Range\0Ortho Window Range\0\0");
 
         switch (search_type) {
+            case SearchType::NN:{
+                break;
+            }
             case SearchType::KNN: {
                 ImGui::InputInt("k", &k);
                 break;
@@ -133,25 +135,25 @@ int main() {
                         tree.searchKNearest(Point2f(mousePos), k);
 
                 // make nearest point red
-                for (int i = 0; i < balls.size(); ++i) {
-                    balls[i].setColor(sf::Color::Black);
+                for (auto & ball : balls) {
+                    ball.setColor(sf::Color::Black);
                 }
-                for (int i = 0; i < idx_nearests.size(); ++i) {
-                    const int idx = idx_nearests[i];
+
+                for (int idx : idx_nearests) {
                     balls[idx].setColor(sf::Color::Red);
                 }
 
                 // draw balls
-                for (int i = 0; i < balls.size(); ++i) {
-                    window.draw(balls[i]);
+                for (const auto & ball : balls) {
+                    window.draw(ball);
                 }
 
                 // draw line between mouse cursor and nearest point
-                for (int i = 0; i < idx_nearests.size(); ++i) {
+                for (int idx_nearest : idx_nearests) {
                     sf::Vertex line[2];
                     line[0].position = sf::Vector2f(mousePos);
                     line[0].color = sf::Color::Blue;
-                    line[1].position = balls[idx_nearests[i]].getPosition();
+                    line[1].position = balls[idx_nearest].getPosition();
                     line[1].color = sf::Color::Blue;
                     window.draw(line, 2, sf::LineStrip);
                 }
@@ -172,17 +174,16 @@ int main() {
                         tree.sphericalRangeSearch(Point2f(mousePos), r);
 
                 // make nearest point red
-                for (int i = 0; i < balls.size(); ++i) {
-                    balls[i].setColor(sf::Color::Black);
+                for (auto & ball : balls) {
+                    ball.setColor(sf::Color::Black);
                 }
-                for (int i = 0; i < indices.size(); ++i) {
-                    const int idx = indices[i];
+                for (int idx : indices) {
                     balls[idx].setColor(sf::Color::Red);
                 }
 
                 // draw balls
-                for (int i = 0; i < balls.size(); ++i) {
-                    window.draw(balls[i]);
+                for (const auto & ball : balls) {
+                    window.draw(ball);
                 }
                 break;
             }
@@ -198,22 +199,20 @@ int main() {
                 rectangle.setPosition(mousePos.x - rect_width/2,mousePos.y - rect_height/2);
                 window.draw(rectangle);
 
-                // TODO: fix bug
                 const std::vector<int> indices =
                         tree.OrthoRangeSearch(Point2f(mousePos), rect_width, rect_height);
 
                 // make nearest point red
-                for (int i = 0; i < balls.size(); ++i) {
-                    balls[i].setColor(sf::Color::Black);
+                for (auto & ball : balls) {
+                    ball.setColor(sf::Color::Black);
                 }
-                for (int i = 0; i < indices.size(); ++i) {
-                    const int idx = indices[i];
+                for (int idx : indices) {
                     balls[idx].setColor(sf::Color::Red);
                 }
 
                 // draw balls
-                for (int i = 0; i < balls.size(); ++i) {
-                    window.draw(balls[i]);
+                for (const auto & ball : balls) {
+                    window.draw(ball);
                 }
                 break;
             }
