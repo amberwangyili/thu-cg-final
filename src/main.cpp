@@ -58,9 +58,6 @@ void showStructure(sf::RenderWindow& window,const kdtree::Node* node = tree.root
     }
     showStructure(window,node->leftChild,node);
 
-
-
-
 }
 int main() {
     // create window
@@ -101,12 +98,13 @@ int main() {
             if(!add_point_manually){
                 add_point_manually = true;
                 balls.clear();
+                tree = {balls};
+
             } else{
                 add_point_manually = false;
                 placeBalls();
             }
         }
-
         if (ImGui::InputInt("Number of Balls", &n_balls)) {
             placeBalls();
         }
@@ -133,10 +131,10 @@ int main() {
                 break;
             }
         }
-
         ImGui::End();
 
         window.clear(sf::Color::Black);
+        // TODO: 点击一次鼠标加一个点
         for (auto & ball : balls) {
             // make nearest point red
             ball.setColor(sf::Color::White);
@@ -159,15 +157,15 @@ int main() {
                     }
                     window.draw(balls[i]);
                 }
-
-                // draw line between mouse cursor and nearest point
-                sf::Vertex line[2];
-                line[0].position = sf::Vector2f(mousePos);
-                line[0].color = sf::Color::Green;
-                line[1].position = balls[idx_nearest].getPosition();
-                line[1].color = sf::Color::Green;
-                window.draw(line, 2, sf::LineStrip);
-
+                if(balls.size()!=0) {
+                    // draw line between mouse cursor and nearest point
+                    sf::Vertex line[2];
+                    line[0].position = sf::Vector2f(mousePos);
+                    line[0].color = sf::Color::Green;
+                    line[1].position = balls[idx_nearest].getPosition();
+                    line[1].color = sf::Color::Green;
+                    window.draw(line, 2, sf::LineStrip);
+                }
                 break;
             }
 
@@ -187,13 +185,15 @@ int main() {
                 }
 
                 // draw line between mouse cursor and nearest point
-                for (int idx_nearest : idx_nearests) {
-                    sf::Vertex line[2];
-                    line[0].position = sf::Vector2f(mousePos);
-                    line[0].color = sf::Color::Green;
-                    line[1].position = balls[idx_nearest].getPosition();
-                    line[1].color = sf::Color::Green;
-                    window.draw(line, 2, sf::LineStrip);
+                if(balls.size()!=0) {
+                    for (int idx_nearest : idx_nearests) {
+                        sf::Vertex line[2];
+                        line[0].position = sf::Vector2f(mousePos);
+                        line[0].color = sf::Color::Green;
+                        line[1].position = balls[idx_nearest].getPosition();
+                        line[1].color = sf::Color::Green;
+                        window.draw(line, 2, sf::LineStrip);
+                    }
                 }
 
                 break;

@@ -83,7 +83,6 @@ public:
   // delete node recursively
   void destructNode(Node* node) {
     if (!node) return;
-
     // delete left child
     if (node->leftChild) {
       destructNode(node->leftChild);
@@ -92,7 +91,6 @@ public:
     if (node->rightChild) {
       destructNode(node->rightChild);
     }
-
     // delete current node
     delete node;
   }
