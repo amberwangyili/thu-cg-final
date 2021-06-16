@@ -246,7 +246,33 @@ class KdTree {
       }
     }
   }
+    template <typename PointU>
+    bool inRect(const PointT& median,const PointU& queryPoint,float width,float height)const {
+        return median[0] <= queryPoint[0] + width/2 && median[0] >= queryPoint[0] - width/2
+            && median[1] <= queryPoint[1] + height/2 && median[1] >= queryPoint[1] - height/2;
+    }
 
+    template <typename PointU>
+    void OrthoWindowRangeSearchNode(const Node* node, const PointU& queryPoint,
+                                  float width,float height, std::vector<int>& list) const {
+        if (!node) return;
+
+        // median point
+        const PointT& median = points[node->idx];
+
+        if (inRect(median,queryPoint,width,height)) {
+            list.push_back(node->idx);
+        }
+
+        // if query point is lower than median, search left child
+        // else, search right child
+        const bool isLower = queryPoint[node->axis] < median[node->axis];
+        if (isLower) {
+            OrthoWindowRangeSearchNode(node->leftChild, queryPoint, width,height, list);
+        } else {
+            OrthoWindowRangeSearchNode(node->rightChild, queryPoint,width,height, list);
+        }
+    }
  public:
   KdTree() : root(nullptr) {}
   KdTree(std::initializer_list<PointT> init) : root(nullptr), points(init) {}
@@ -316,6 +342,13 @@ class KdTree {
     sphericalRangeSearchNode(root, queryPoint, r, ret);
     return ret;
   }
+    template <typename PointU>
+    std::vector<int> OrthoRangeSearch(const PointU& queryPoint,
+                                          float wdith,float height) const {
+        std::vector<int> ret;
+        OrthoWindowRangeSearchNode(root, queryPoint, wdith,height, ret);
+        return ret;
+    }
 };
 
 }  // namespace kdtree

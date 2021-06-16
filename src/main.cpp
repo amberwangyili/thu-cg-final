@@ -20,8 +20,8 @@ int n_balls = 300*_factor*_factor;
 int k = 5;
 float r = 100;
 
-float rect_width = 100;
-float rect_height = 200;
+float rect_width = 200;
+float rect_height = 100;
 std::vector<Ball> balls;
 kdtree::KdTree<Ball> tree;
 
@@ -191,13 +191,16 @@ int main() {
                 // draw mouse ball
                 const sf::Vector2f mousePos =
                         static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-                mouseBall.setRadius(r);
-                mouseBall.setPosition(mousePos);
-                window.draw(mouseBall);
+                sf::RectangleShape rectangle;
+                rectangle.setSize(sf::Vector2f(rect_width, rect_height));
+                rectangle.setOutlineColor(sf::Color::Blue);
+                rectangle.setOutlineThickness(1);
+                rectangle.setPosition(mousePos.x - rect_width/2,mousePos.y - rect_height/2);
+                window.draw(rectangle);
 
-                // spherical range search
+                // TODO: fix bug
                 const std::vector<int> indices =
-                        tree.sphericalRangeSearch(Point2f(mousePos), r);
+                        tree.OrthoRangeSearch(Point2f(mousePos), rect_width, rect_height);
 
                 // make nearest point red
                 for (int i = 0; i < balls.size(); ++i) {

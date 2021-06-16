@@ -8,6 +8,7 @@
 
 // SFML
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 // uniform random number in [0, 1]
 inline float rnd() {
