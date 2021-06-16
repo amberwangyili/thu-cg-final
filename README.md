@@ -4,5 +4,5 @@
 ```
 cd lib
 git clone https://github.com/eliasdaler/imgui-sfml.git
-git clone https://github.com/eliasdaler/imgui.git
+git clone -b cmake https://github.com/eliasdaler/imgui/
 ```

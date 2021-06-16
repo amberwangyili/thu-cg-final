@@ -1,7 +1,5 @@
 /.vscode
 /build
-/lib/imgui
-/lib/imgui-sfml
 .DS_Store
 .idea/
 # Prerequisites
