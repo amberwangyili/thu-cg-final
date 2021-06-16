@@ -29,21 +29,21 @@ static float distance2(const PointT& p1, const PointU& p2) {
   return dist2;
 }
 
+    struct Node {
+        int axis;          // separation axis
+        int idx;           // index of median point
+        Node* leftChild;   // left child node
+        Node* rightChild;  // right child node
+
+        Node() : axis(-1), idx(-1), leftChild(nullptr), rightChild(nullptr){}
+    };
 // PointT: point type
 // PointT must have following property
 // unsigned int PointT::dim                   dimmension
 // T PointT::operator[](unsigned int) const   element access
 template <typename PointT>
 class KdTree {
- private:
-  struct Node {
-    int axis;          // separation axis
-    int idx;           // index of median point
-    Node* leftChild;   // left child node
-    Node* rightChild;  // right child node
-
-    Node() : axis(-1), idx(-1), leftChild(nullptr), rightChild(nullptr) {}
-  };
+public:
 
   std::vector<PointT> points;  // array of points
   Node* root;                  // root node
@@ -359,9 +359,7 @@ class KdTree {
         OrthoWindowRangeSearchNode(root, queryPoint, wdith,height, ret);
         return ret;
     }
-    void showStructure() const{
-        points[root->idx];
-    }
+
 };
 
 }  // namespace kdtree
