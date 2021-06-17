@@ -25,7 +25,7 @@ public:
     Point2f(float x, float y) : sf::Vector2f(x, y) {}
 
     template<typename T>
-    Point2f(const sf::Vector2<T> &point) : sf::Vector2f(point) {}
+    explicit Point2f(const sf::Vector2<T> &point) : sf::Vector2f(point) {}
 
     float operator[](unsigned int i) const {
         if (i == 0) {
@@ -58,7 +58,7 @@ public:
         setPosition(position);
         circle.setPointCount(300); //为了让圆更圆滑
         circle.setFillColor(sf::Color::Transparent);
-        circle.setOutlineThickness(0.1);
+        circle.setOutlineThickness(1);
         circle.setOutlineColor(sf::Color(51,51,51));
     }
 

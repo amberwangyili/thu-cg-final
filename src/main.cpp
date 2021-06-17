@@ -31,6 +31,7 @@ float r = 300;
 
 float rect_width = 500;
 float rect_height = 300;
+float ball_radius = 3.5f*_factor;
 std::vector<Ball> balls;
 kdtree::KdTree<Ball> tree;
 
@@ -38,7 +39,7 @@ void placeBalls() {
     balls.clear();
     // place balls randomly
     for (int i = 0; i < n_balls; ++i) {
-        balls.emplace_back(sf::Vector2f(width * rnd(), height * rnd()), 3.0f * _factor);
+        balls.emplace_back(sf::Vector2f(width * rnd(), height * rnd()), ball_radius);
     }
 
     // build kd-tree
@@ -174,7 +175,7 @@ int main() {
                 istringstream istrm(line);
                 float x,y;
                 istrm>>x>>y;
-                balls.emplace_back(sf::Vector2f(x*width,y*height),3.0f*_factor);
+                balls.emplace_back(sf::Vector2f(x*width,y*height),ball_radius);
             }
             fileDialog.ClearSelected();
             tree = {balls};
@@ -216,9 +217,9 @@ int main() {
                     // draw line between mouse cursor and nearest point
                     sf::Vertex line[2];
                     line[0].position = sf::Vector2f(mousePos);
-                    line[0].color = sf::Color::Green;
+                    line[0].color = my_blue;
                     line[1].position = balls[idx_nearest].getPosition();
-                    line[1].color = sf::Color::Green;
+                    line[1].color = my_blue;
                     window.draw(line, 2, sf::LineStrip);
                 }
                 break;
@@ -244,9 +245,9 @@ int main() {
                     for (int idx_nearest : idx_nearests) {
                         sf::Vertex line[2];
                         line[0].position = sf::Vector2f(mousePos);
-                        line[0].color = sf::Color::Green;
+                        line[0].color = my_blue;
                         line[1].position = balls[idx_nearest].getPosition();
-                        line[1].color = sf::Color::Green;
+                        line[1].color = my_blue;
                         window.draw(line, 2, sf::LineStrip);
                     }
                 }
@@ -261,8 +262,9 @@ int main() {
 
                 sf::CircleShape mouseBall;
                 mouseBall.setRadius(r);
+                mouseBall.setPointCount(300);
                 mouseBall.setOutlineColor(my_blue);
-                mouseBall.setOutlineThickness(1);
+                mouseBall.setOutlineThickness(3);
                 mouseBall.setFillColor(sf::Color::Transparent);
                 mouseBall.setPosition(mousePos - sf::Vector2f(r, r));
                 window.draw(mouseBall);
@@ -289,7 +291,7 @@ int main() {
                 sf::RectangleShape rectangle;
                 rectangle.setSize(sf::Vector2f(rect_width, rect_height));
                 rectangle.setOutlineColor(my_blue);
-                rectangle.setOutlineThickness(1);
+                rectangle.setOutlineThickness(3);
                 rectangle.setFillColor(sf::Color::Transparent);
                 rectangle.setPosition(mousePos.x - rect_width / 2, mousePos.y - rect_height / 2);
                 window.draw(rectangle);
