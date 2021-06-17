@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <chrono>
 #include <string>
 
 
@@ -74,7 +75,75 @@ void showStructure(sf::RenderWindow &window, const kdtree::Node *node = tree.roo
 
 }
 
+void testRandom() {
+    string number[17] = { "0","1","5","25","50","100" ,"10K","20K","40K","80K","100K","200K" ,"400K" ,"800K" ,"1000K" ,"1600K" ,"3200K" };
+    for (int i = 0; i < 6; i++) {
+        ifstream input("../../data/size-random/input-" + number[i] + ".txt", ios::in);
+        if(!input){
+            cout<<"fuck"<<endl;
+        }
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+
+        auto start_epoch = chrono::high_resolution_clock::now();
+        tree.buildTree();
+        auto finish_epoch = chrono::high_resolution_clock::now();
+        auto epoches = chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        cout <<number[i]  << " " << epoches << endl;
+    }
+    for (int i = 6; i < 17; i++) {
+        ifstream input("../../data/size-random/input" + number[i] + ".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+
+        auto start_epoch = chrono::high_resolution_clock::now();
+        tree.buildTree();
+        auto finish_epoch = chrono::high_resolution_clock::now();
+        auto epoches = chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        cout <<number[i]  << " " << epoches << endl;
+    }
+}
+
+void testCircle(){
+    string number[6] = { "4","10","100","1000","10000","10k" };
+    for (const auto & i : number) {
+        ifstream input("../../data/size-circle/circle" + i + ".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+
+        auto start_epoch = chrono::high_resolution_clock::now();
+        tree.buildTree();
+        auto finish_epoch = chrono::high_resolution_clock::now();
+        auto epoches = chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        cout <<i<<" "<<  epoches << endl;
+    }
+}
+
 int main() {
+    testCircle();
+    testRandom();
+    /*
     // create window
     sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search", sf::Style::Default);
     window.setFramerateLimit(144);
@@ -317,6 +386,6 @@ int main() {
     }
 
     ImGui::SFML::Shutdown();
-
+*/
     return 0;
 }
