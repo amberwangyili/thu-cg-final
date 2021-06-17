@@ -13,6 +13,11 @@
 
 using namespace std;
 
+auto my_red = sf::Color(217,150,148);
+auto my_green = sf::Color(195,214,155);
+auto my_blue = sf::Color(183, 222, 231);
+
+
 enum class SearchType {
     NN, KNN, SR, RR
 };
@@ -22,7 +27,7 @@ constexpr int width = 1024 * _factor;
 constexpr int height = 768 * _factor;
 int n_balls = 500 * _factor * _factor;
 int k = 5;
-float r = 100;
+float r = 300;
 
 float rect_width = 500;
 float rect_height = 300;
@@ -54,15 +59,14 @@ void showStructure(sf::RenderWindow &window, const kdtree::Node *node = tree.roo
             line[0].position = sf::Vector2f(tree.points[node->idx][0], 0);
             line[1].position = sf::Vector2f(tree.points[node->idx][0], tree.points[node_parent->idx][1]);
         }
-        line[0].color = sf::Color::Cyan;
-        line[1].color = sf::Color::Cyan;
+        line[0].color = my_blue;
+        line[1].color = my_blue;
         window.draw(line, 2, sf::LineStrip);
     } else {
-        sf::Vertex line[2];
         line[0].position = sf::Vector2f(0, tree.points[node->idx][1]);
         line[1].position = sf::Vector2f(tree.points[node_parent->idx][0], tree.points[node->idx][1]);
-        line[0].color = sf::Color::Cyan;
-        line[1].color = sf::Color::Cyan;
+        line[0].color = my_blue;
+        line[1].color = my_blue;
         window.draw(line, 2, sf::LineStrip);
     }
     showStructure(window, node->leftChild, node);
@@ -88,9 +92,6 @@ int main() {
     // setup points and balls
     placeBalls();
     //tree.toGraphviz("../../test.gv");
-    // mouse ball
-    Ball mouseBall(sf::Vector2f(), r);
-    mouseBall.setColor(sf::Color::Blue);
 
     // app loop
     sf::Clock deltaClock;
@@ -180,7 +181,7 @@ int main() {
             tree.buildTree();
         }
 
-        window.clear(sf::Color::Black);
+        window.clear(sf::Color::White);
         // TODO: 点击一次鼠标加一个点
         if (add_point_manually) {
             if (ImGuiMouseButton_Left) {
@@ -191,8 +192,7 @@ int main() {
 
 
         for (auto &ball : balls) {
-            // make nearest point red
-            ball.setColor(sf::Color::White);
+            ball.setColor(my_green);
         }
         if (drawStructure) {
             showStructure(window);
@@ -208,11 +208,11 @@ int main() {
                 for (int i = 0; i < balls.size(); ++i) {
                     // make nearest point red
                     if (i == idx_nearest) {
-                        balls[i].setColor(sf::Color::Red);
+                        balls[i].setColor(my_red);
                     }
                     window.draw(balls[i]);
                 }
-                if (balls.size() != 0) {
+                if (!balls.empty()) {
                     // draw line between mouse cursor and nearest point
                     sf::Vertex line[2];
                     line[0].position = sf::Vector2f(mousePos);
@@ -231,7 +231,7 @@ int main() {
                         tree.searchKNearest(Point2f(mousePos), k);
 
                 for (int idx : idx_nearests) {
-                    balls[idx].setColor(sf::Color::Red);
+                    balls[idx].setColor(my_red);
                 }
 
                 // draw balls
@@ -240,7 +240,7 @@ int main() {
                 }
 
                 // draw line between mouse cursor and nearest point
-                if (balls.size() != 0) {
+                if (!balls.empty()) {
                     for (int idx_nearest : idx_nearests) {
                         sf::Vertex line[2];
                         line[0].position = sf::Vector2f(mousePos);
@@ -258,8 +258,13 @@ int main() {
                 // draw mouse ball
                 const sf::Vector2f mousePos =
                         static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+
+                sf::CircleShape mouseBall;
                 mouseBall.setRadius(r);
-                mouseBall.setPosition(mousePos);
+                mouseBall.setOutlineColor(my_blue);
+                mouseBall.setOutlineThickness(1);
+                mouseBall.setFillColor(sf::Color::Transparent);
+                mouseBall.setPosition(mousePos - sf::Vector2f(r, r));
                 window.draw(mouseBall);
 
                 // spherical range search
@@ -267,7 +272,7 @@ int main() {
                         tree.sphericalRangeSearch(Point2f(mousePos), r);
 
                 for (int idx : indices) {
-                    balls[idx].setColor(sf::Color::Red);
+                    balls[idx].setColor(my_red);
                 }
 
                 // draw balls
@@ -283,7 +288,7 @@ int main() {
                         static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
                 sf::RectangleShape rectangle;
                 rectangle.setSize(sf::Vector2f(rect_width, rect_height));
-                rectangle.setOutlineColor(sf::Color::Blue);
+                rectangle.setOutlineColor(my_blue);
                 rectangle.setOutlineThickness(1);
                 rectangle.setFillColor(sf::Color::Transparent);
                 rectangle.setPosition(mousePos.x - rect_width / 2, mousePos.y - rect_height / 2);
@@ -293,7 +298,7 @@ int main() {
                         tree.OrthoRangeSearch(Point2f(mousePos), rect_width, rect_height);
 
                 for (int idx : indices) {
-                    balls[idx].setColor(sf::Color::Red);
+                    balls[idx].setColor(my_red);
                 }
 
                 // draw balls

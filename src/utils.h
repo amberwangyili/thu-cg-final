@@ -58,8 +58,8 @@ public:
         setPosition(position);
         circle.setPointCount(300); //为了让圆更圆滑
         circle.setFillColor(sf::Color::Transparent);
-        circle.setOutlineThickness(1.0);
-        circle.setOutlineColor(sf::Color::Black);
+        circle.setOutlineThickness(0.1);
+        circle.setOutlineColor(sf::Color(51,51,51));
     }
 
     float operator[](unsigned int i) const {
@@ -87,7 +87,7 @@ public:
         circle.setRadius(r);
     }
 
-    void setColor(const sf::Color &color) { circle.setOutlineColor(color); }
+    void setColor(const sf::Color &color) { circle.setFillColor(color); }
 };
 
 
