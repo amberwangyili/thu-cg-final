@@ -23,8 +23,9 @@ public:
     static constexpr unsigned int dim = 2;
 
     Point2f(float x, float y) : sf::Vector2f(x, y) {}
-    template <typename T>
-    Point2f(const sf::Vector2<T>& point) : sf::Vector2f(point) {}
+
+    template<typename T>
+    Point2f(const sf::Vector2<T> &point) : sf::Vector2f(point) {}
 
     float operator[](unsigned int i) const {
         if (i == 0) {
@@ -45,14 +46,14 @@ protected:
     float radius;
     sf::CircleShape circle;
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
         target.draw(circle);
     }
 
 public:
     static constexpr unsigned int dim = 2;
 
-    Ball(const sf::Vector2f& position, float radius) {
+    Ball(const sf::Vector2f &position, float radius) {
         setRadius(radius);
         setPosition(position);
         circle.setPointCount(300); //为了让圆更圆滑
@@ -73,9 +74,10 @@ public:
     }
 
     sf::Vector2f getPosition() const { return position; }
+
     float getRadius() const { return radius; }
 
-    void setPosition(const sf::Vector2f& position) {
+    void setPosition(const sf::Vector2f &position) {
         this->position = position;
         circle.setPosition(position - sf::Vector2f(radius, radius));
     }
@@ -85,7 +87,7 @@ public:
         circle.setRadius(r);
     }
 
-    void setColor(const sf::Color& color) { circle.setOutlineColor(color);}
+    void setColor(const sf::Color &color) { circle.setOutlineColor(color); }
 };
 
 
