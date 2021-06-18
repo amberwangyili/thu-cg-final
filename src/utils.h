@@ -90,9 +90,3 @@ public:
     void setColor(const sf::Color &color) { circle.setFillColor(color); }
 };
 
-
-/*
-* @File: utils.h
-* @Date:   2021-06-16 08:53:58
-* @Last Modified time: 2021-06-16 08:53:58
-*/
