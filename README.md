@@ -27,13 +27,6 @@ git clone -b cmake https://github.com/eliasdaler/imgui/
   * [ ] random distribution: 0 1 5 7 8 10 25 50 100 10k 20k 40k 80k 100k 200k 400k 800k 1600k 3200k 1M
   * [ ] circle distribution:  4 10 100 1000 10000 10k
 
-* [ ] ###### distribution:
-
-   * [ ] input /
-     horizontal #8
-   * [ ] input / vertical #7
-   * [ ] input / circle #10
-
 * [ ] ###### radius:
   * 0.01 0.012 0.014 0.016 0.018 0.02 0.022 0.024
 
@@ -51,9 +44,9 @@ git clone -b cmake https://github.com/eliasdaler/imgui/
   * [ ] 查询半径大小不同的时候
   * [ ] 不同距离度规
 
-* [ ] ##### 超矩形划分可视化 @yili 
+* [x] ##### 超矩形划分可视化 @yili
 
-  * [ ] 平衡或不平衡的设置(online/offline)
-  * [ ] 手动加点的实时kdtree分割演示
-  * [ ] modrian painting rendering
+  * [x] 平衡或不平衡的设置(online/offline)
+  * [x] 手动加点的实时kdtree分割演示
+  * [x] ~~modrian painting rendering~~
 
