@@ -10,6 +10,7 @@
 #include <iostream>
 #include <chrono>
 #include <string>
+#include<random>
 
 
 using namespace std;
@@ -75,13 +76,10 @@ void showStructure(sf::RenderWindow &window, const kdtree::Node *node = tree.roo
 
 }
 
-void testRandom() {
-    string number[17] = { "0","1","5","25","50","100" ,"10K","20K","40K","80K","100K","200K" ,"400K" ,"800K" ,"1000K" ,"1600K" ,"3200K" };
-    for (int i = 0; i < 6; i++) {
-        ifstream input("../../data/size-random/input-" + number[i] + ".txt", ios::in);
-        if(!input){
-            cout<<"fuck"<<endl;
-        }
+void testRandom(){
+    string number[13] = { "0","1","5","25","50","100" ,"10000","20000","40000","80000","100000","200000" ,"400000" };
+    for (const auto & i : number) {
+        ifstream input("../../data/size-random/random" + i + ".txt", ios::in);
         balls.clear();
         std::string line;
         while (getline(input, line)) {
@@ -96,30 +94,12 @@ void testRandom() {
         tree.buildTree();
         auto finish_epoch = chrono::high_resolution_clock::now();
         auto epoches = chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
-        cout <<number[i]  << " " << epoches << endl;
-    }
-    for (int i = 6; i < 17; i++) {
-        ifstream input("../../data/size-random/input" + number[i] + ".txt", ios::in);
-        balls.clear();
-        std::string line;
-        while (getline(input, line)) {
-            istringstream istrm(line);
-            float x, y;
-            istrm >> x >> y;
-            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
-        }
-        tree = { balls };
-
-        auto start_epoch = chrono::high_resolution_clock::now();
-        tree.buildTree();
-        auto finish_epoch = chrono::high_resolution_clock::now();
-        auto epoches = chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
-        cout <<number[i]  << " " << epoches << endl;
+        cout <<i<<" "<<  epoches << endl;
     }
 }
 
 void testCircle(){
-    string number[16] = { "0","1","5","25","50","100" ,"10000","20000","40000","80000","100000","200000" ,"400000" ,"800000" ,"1000000" ,"1600000" };
+    string number[13] = { "0","1","5","25","50","100" ,"10000","20000","40000","80000","100000","200000" ,"400000" };
     for (const auto & i : number) {
         ifstream input("../../data/size-circle/circle" + i + ".txt", ios::in);
         balls.clear();
@@ -140,10 +120,117 @@ void testCircle(){
     }
 }
 
+void testDiagonal(){
+    string number[13] = { "0","1","5","25","50","100" ,"10000","20000","40000","80000","100000","200000" ,"400000" };
+    for (const auto & i : number) {
+        ifstream input("../../data/size-diagonal/diagonal" + i + ".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+
+        auto start_epoch = chrono::high_resolution_clock::now();
+        tree.buildTree();
+        auto finish_epoch = chrono::high_resolution_clock::now();
+        auto epoches = chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        cout <<i<<" "<<  epoches << endl;
+    }
+}
+
+void testKNearset(){
+    uniform_real_distribution<float> u(0,1);
+    default_random_engine e;
+    int number[12] = {1,2,5,10,20,50,100,200,400,600,800,1000};
+    for(int i = 0;i<12;i = i+1){
+        auto k = number[i];
+
+        ifstream input("../../data/size-random/random10000.txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.searchKNearest(Point2f(query_x * width, query_y * height), k);
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"\"random\" "<<k<<" "<<  result/1000.0 << endl;
+    }
+    for(int i = 0;i<12;i = i+1){
+        auto k = number[i];
+
+        ifstream input("../../data/size-circle/circle10000.txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.searchKNearest(Point2f(query_x * width, query_y * height), k);
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"\"circle\" "<<k<<" "<<  result/1000.0 << endl;
+    }
+
+    for(int i = 0;i<12;i = i+1){
+        auto k = number[i];
+
+        ifstream input("../../data/size-diagonal/diagonal10000.txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.searchKNearest(Point2f(query_x * width, query_y * height), k);
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"\"diagonal\" "<<k<<" "<<  result/1000.0 << endl;
+    }
+
+}
+
 int main() {
-    testCircle();
-/*
+    //testRandom();
+    //testDiagonal();
+    testKNearset();
     // create window
+    /*
     sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search", sf::Style::Default);
     window.setFramerateLimit(144);
 
