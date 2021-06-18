@@ -15,9 +15,13 @@
 * IMGUI-SFML (install via git)
 
 ```bash
-cd lib
-git clone https://github.com/eliasdaler/imgui-sfml.git
-git clone -b cmake https://github.com/eliasdaler/imgui/
+cd ..
+mkdir build
+cd build
+cmake ..
+make
+cd src
+./kdtree
 ```
 
 ### 输入数据格式
