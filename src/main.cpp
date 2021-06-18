@@ -62,14 +62,14 @@ void showStructure(sf::RenderWindow &window, const kdtree::Node *node = tree.roo
             line[0].position = sf::Vector2f(tree.points[node->idx][0], 0);
             line[1].position = sf::Vector2f(tree.points[node->idx][0], tree.points[node_parent->idx][1]);
         }
-        line[0].color = my_blue;
-        line[1].color = my_blue;
+        line[0].color = sf::Color::Black;
+        line[1].color = sf::Color::Black;
         window.draw(line, 2, sf::LineStrip);
     } else {
         line[0].position = sf::Vector2f(0, tree.points[node->idx][1]);
         line[1].position = sf::Vector2f(tree.points[node_parent->idx][0], tree.points[node->idx][1]);
-        line[0].color = my_blue;
-        line[1].color = my_blue;
+        line[0].color = sf::Color::Black;
+        line[1].color = sf::Color::Black;
         window.draw(line, 2, sf::LineStrip);
     }
     showStructure(window, node->leftChild, node);
@@ -225,12 +225,93 @@ void testKNearset(){
 
 }
 
+
+void testKNearset2(){
+    uniform_real_distribution<float> u(0,1);
+    default_random_engine e;
+    string number[8] = {"25","50","100" ,"10000","20000","40000","80000","100000" };
+    const int query_k = 20;
+    for(int i = 0;i<8;i = i+1){
+
+        ifstream input("../../data/size-random/random"+number[i]+".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.searchKNearest(Point2f(query_x * width, query_y * height), query_k );
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"random " <<number[i]<<" "<<  result/1000.0 << endl;
+    }
+    for(int i = 0;i<8;i = i+1){
+
+        ifstream input("../../data/size-circle/circle"+number[i]+".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.searchKNearest(Point2f(query_x * width, query_y * height), query_k );
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"circle " <<number[i]<<" "<<  result/1000.0 << endl;
+    }
+    for(int i = 0;i<8;i = i+1){
+
+        ifstream input("../../data/size-diagonal/diagonal"+number[i]+".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.searchKNearest(Point2f(query_x * width, query_y * height), query_k );
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"diagonal " <<number[i]<<" "<<  result/1000.0 << endl;
+    }
+}
+
+
 int main() {
     //testRandom();
     //testDiagonal();
-    testKNearset();
+    //testKNearset2();
     // create window
-    /*
+
     sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search", sf::Style::Default);
     window.setFramerateLimit(144);
 
@@ -281,17 +362,6 @@ int main() {
         if (ImGui::Button("Show KD-Tree Structure")) {
             drawStructure = !drawStructure;
         }
-        if (ImGui::Button("Add Points Manually")) {
-            if (!add_point_manually) {
-                add_point_manually = true;
-                balls.clear();
-                tree = {balls};
-
-            } else {
-                add_point_manually = false;
-                placeBalls();
-            }
-        }
         if (ImGui::InputInt("Number of Balls", &n_balls)) {
             placeBalls();
         }
@@ -339,12 +409,6 @@ int main() {
 
         window.clear(sf::Color::White);
         // TODO: 点击一次鼠标加一个点
-        if (add_point_manually) {
-            if (ImGuiMouseButton_Left) {
-                const sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                balls.emplace_back(sf::Vector2f(mousePos.x, mousePos.y), 3.0f * _factor);
-            }
-        }
 
 
         for (auto &ball : balls) {
@@ -472,6 +536,6 @@ int main() {
     }
 
     ImGui::SFML::Shutdown();
-*/
+
     return 0;
 }
