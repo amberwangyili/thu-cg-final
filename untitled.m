@@ -28,7 +28,7 @@ opts.StartPoint = [0.251556538335812 0.253992327732941 0.519042247187466];
 figure( 'Name', 'untitled fit 1' );
 h = plot( fitresult, xData, yData );
 %legend( h, 'y vs. x', '$\mathcal{O}(n\log n)$',  'Location', 'NorthEast' );
-l = legend('$time$ vs $n$', '$\mathcal{O}(n\log n)$');
+l = legend('time vs $n$', '$\mathcal{O}(n\log n)$');
 set(l,'Interpreter','latex');
 xlabel('n/points');
 ylabel('time/us');

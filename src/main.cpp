@@ -119,7 +119,7 @@ void testRandom() {
 }
 
 void testCircle(){
-    string number[6] = { "4","10","100","1000","10000","10k" };
+    string number[16] = { "0","1","5","25","50","100" ,"10000","20000","40000","80000","100000","200000" ,"400000" ,"800000" ,"1000000" ,"1600000" };
     for (const auto & i : number) {
         ifstream input("../../data/size-circle/circle" + i + ".txt", ios::in);
         balls.clear();
@@ -142,8 +142,7 @@ void testCircle(){
 
 int main() {
     testCircle();
-    testRandom();
-    /*
+/*
     // create window
     sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search", sf::Style::Default);
     window.setFramerateLimit(144);
