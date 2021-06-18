@@ -1,8 +1,3 @@
-/*
-* @File: utils.h
-* @Date:   2021-06-16 08:33:14
-* @Last Modified time: 2021-06-16 08:54:00
-*/
 #include <iostream>
 #include <random>
 
@@ -46,7 +41,7 @@ protected:
     float radius;
     sf::CircleShape circle;
 
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
         target.draw(circle);
     }
 
@@ -74,8 +69,6 @@ public:
     }
 
     sf::Vector2f getPosition() const { return position; }
-
-    float getRadius() const { return radius; }
 
     void setPosition(const sf::Vector2f &position) {
         this->position = position;

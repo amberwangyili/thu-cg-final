@@ -5,20 +5,17 @@
 #include <imgui-SFML.h>
 #include "utils.h"
 #include "imfilebrowser.h"
-#include <fstream>
 #include <sstream>
 #include <iostream>
 #include <chrono>
 #include <string>
 #include<random>
 
-
 using namespace std;
 
 auto my_red = sf::Color(217,150,148);
 auto my_green = sf::Color(195,214,155);
 auto my_blue = sf::Color(183, 222, 231);
-
 
 enum class SearchType {
     NN, KNN, SR, RR
@@ -81,9 +78,8 @@ void testCircle();
 void testDiagonal();
 void testKNearset();
 void testKNearset2();
-void testSperical2();
-
 void testSperical();
+void testSperical2();
 
 
 int main() {
@@ -91,7 +87,6 @@ int main() {
     //testDiagonal();
     //testKNearset2();
     // create window
-/*
     sf::RenderWindow window(sf::VideoMode(width, height), "kdtree - Search", sf::Style::Default);
     window.setFramerateLimit(144);
 
@@ -104,11 +99,9 @@ int main() {
     fileDialog.SetTypeFilters({ ".txt" });
 
     bool drawStructure = false;
-    bool add_point_manually = false;
 
     // setup points and balls
     placeBalls();
-    //tree.toGraphviz("../../test.gv");
 
     // app loop
     sf::Clock deltaClock;
@@ -188,7 +181,6 @@ int main() {
         }
 
         window.clear(sf::Color::White);
-        // TODO: 点击一次鼠标加一个点
 
 
         for (auto &ball : balls) {
@@ -316,11 +308,9 @@ int main() {
     }
 
     ImGui::SFML::Shutdown();
-*/
-    testSperical2();
+
     return 0;
 }
-
 
 
 void testRandom(){
