@@ -81,6 +81,7 @@ void testCircle();
 void testDiagonal();
 void testKNearset();
 void testKNearset2();
+void testSperical2();
 
 void testSperical();
 
@@ -316,7 +317,7 @@ int main() {
 
     ImGui::SFML::Shutdown();
 */
-    testSperical();
+    testSperical2();
     return 0;
 }
 
@@ -634,5 +635,84 @@ void testSperical(){
         }
         cout <<"diagonal "<<my_r/height<<" "<<  result/1000.0 << endl;
     }
+}
 
+void testSperical2(){
+
+    uniform_real_distribution<float> u(0,1);
+    default_random_engine e;
+    string number[8] = {"25","50","100" ,"10000","20000","40000","80000","100000" };
+    auto my_r  = 0.2*height;
+    for(int i = 0;i<8;i = i+1){
+
+        ifstream input("../../data/size-random/random"+number[i]+".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.sphericalRangeSearch(Point2f(query_x,query_y),my_r);
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"random " <<number[i]<<" "<<  result/1000.0 << endl;
+    }
+    for(int i = 0;i<8;i = i+1){
+
+        ifstream input("../../data/size-circle/circle"+number[i]+".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.sphericalRangeSearch(Point2f(query_x,query_y),my_r);
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"circle " <<number[i]<<" "<<  result/1000.0 << endl;
+    }
+    for(int i = 0;i<8;i = i+1){
+
+        ifstream input("../../data/size-diagonal/diagonal"+number[i]+".txt", ios::in);
+        balls.clear();
+        std::string line;
+        while (getline(input, line)) {
+            istringstream istrm(line);
+            float x, y;
+            istrm >> x >> y;
+            balls.emplace_back(sf::Vector2f(x * width, y * height), ball_radius);
+        }
+        tree = { balls };
+        tree.buildTree();
+        long long result = 0;
+        for(int j = 0;j<1000;j++) {
+            const auto query_x = u(e);
+            const auto query_y = u(e);
+            auto start_epoch = chrono::high_resolution_clock::now();
+            tree.sphericalRangeSearch(Point2f(query_x,query_y),my_r);
+            auto finish_epoch = chrono::high_resolution_clock::now();
+            result += chrono::duration_cast<chrono::microseconds>(finish_epoch - start_epoch).count();
+        }
+        cout <<"diagonal " <<number[i]<<" "<<  result/1000.0 << endl;
+    }
 }

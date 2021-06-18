@@ -22,27 +22,27 @@ git clone -b cmake https://github.com/eliasdaler/imgui/
 
 ## TODO
 
-* [ ] ###### Points size:
+* [x] ###### Points size:
 
-  * [ ] random distribution: 0 1 5 7 8 10 25 50 100 10k 20k 40k 80k 100k 200k 400k 800k 1600k 3200k 1M
-  * [ ] circle distribution:  4 10 100 1000 10000 10k
+  * [x] random distribution: 0 1 5 7 8 10 25 50 100 10k 20k 40k 80k 100k 200k 400k 800k 1600k 3200k 1M
+  * [x] circle distribution:  4 10 100 1000 10000 10k
 
-* [ ] ###### radius:
+* [x] ###### radius:
   * 0.01 0.012 0.014 0.016 0.018 0.02 0.022 0.024
 
-* [ ] ###### k-nearest neighbor size:
+* [x] ###### k-nearest neighbor size:
   * 1 2 4 8 16
 
 ------
 
 
 
-* [ ] ##### 不同分割策略 @xinyang
+* [x] ##### 不同分割策略 @xinyang
 
-  * [ ] 在点数多少的时候
-  * [ ] 在不同点分布的时候
-  * [ ] 查询半径大小不同的时候
-  * [ ] 不同距离度规
+  * [x] 在点数多少的时候
+  * [x] 在不同点分布的时候
+  * [x] 查询半径大小不同的时候
+  * [x] ~~不同距离度规~~
 
 * [x] ##### 超矩形划分可视化 @yili
 
