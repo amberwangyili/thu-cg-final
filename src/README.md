@@ -11,12 +11,16 @@
 
 * OpenGL 3.1 (preinstalled)
 * [SFML 2.5](https://github.com/SFML/SFML) (preinstalled)
-* IMGUI (preinstalled)
-* IMGUI-SFML (preinstalled)
+* IMGUI (install via git)
+* IMGUI-SFML (install via git)
 
-### 运行方法
+### Usage
 
 ```bash
+cd lib
+git clone https://github.com/eliasdaler/imgui-sfml.git
+git clone -b cmake https://github.com/eliasdaler/imgui/
+cd ..
 mkdir build
 cd build
 cmake ..
