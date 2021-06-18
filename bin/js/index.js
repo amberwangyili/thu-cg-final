@@ -1,13 +1,3 @@
-/*
-* @Author: Amber
-* @Date:   2021-06-18 13:31:56
-* @Last Modified by:   yiliwang
-* @Last Modified time: 2021-06-18 13:32:55
-*/
-
-//@Author: yiliwang
-//@Date:   2021-6-18
-
 var speedfast = 600 // ms
 var speedslow = 2500 // ms
 var data
@@ -44,11 +34,14 @@ function drawTree() {
         .append('p')
         .text('press start bottom first!')
         .attr('id', 'tiptext')
+        .attr('opacity', 1)
 
     var svg = d3
         .select('#treeContainer')
         .append('svg')
+        .attr('id', 'treeSvg')
         .attr('class', 'kdtree')
+        // .select('#treeSvg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
 
@@ -103,11 +96,29 @@ function drawTree() {
     drawDataSet(data)
 }
 
+function StartHandle() {
+    document.getElementById('buttonStart').disabled = true
+    balanceHandle()
+}
+
 function balanceHandle() {
     myNodeTree = new kdTree(colorDataset, colorFormatter, ['red', 'green'])
     data = myNodeTree.pointsBFS()
     rebalancing = true
     drawDataSet(data)
+}
+
+function clearHandle() {
+    document.getElementById('buttonStart').disabled = false
+    data = []
+    colorDataset = []
+    myNodeTree = new kdTree(colorDataset, colorFormatter, ['black', 'black'])
+    d3.select('#treeContainer').selectAll('*').remove()
+    var p = d3.select('#tiptext')
+    var svg = d3.select('#treeSvg')
+    p.remove()
+    svg.remove()
+    drawTree()
 }
 
 function updateTree(color) {
