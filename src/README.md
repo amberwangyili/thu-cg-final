@@ -11,11 +11,12 @@
 
 * OpenGL 3.1 (preinstalled)
 * [SFML 2.5](https://github.com/SFML/SFML) (preinstalled)
-* IMGUI (install via git)
-* IMGUI-SFML (install via git)
+* IMGUI (preinstalled)
+* IMGUI-SFML (preinstalled)
+
+### 运行方法
 
 ```bash
-cd ..
 mkdir build
 cd build
 cmake ..
@@ -27,8 +28,4 @@ cd src
 ### 输入数据格式
 
 输入数据为.txt文件，每行包含0-1间的浮点数，允许重复
-
-
-
-#### 
 
