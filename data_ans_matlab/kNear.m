@@ -1,18 +1,18 @@
 clc;clear;
-data = ["random" 1 0.126;
-"random" 2 0.542;
-"random" 5 1.102;
-"random" 10 2.479;
-"random" 20 4.097;
-"random" 50 8.603;
-"random" 100 15.769;
-"random" 200 33.558;
-"random" 400 61.997;
-"random" 600 85.53;
-"random" 800 112.107;
-"random" 1000 143.769];
-x = data(:,2);
-y = data(:,3);
+data = [1 0.126;
+2 0.542;
+5 1.102;
+10 2.479;
+20 4.097;
+50 8.603;
+100 15.769;
+200 33.558;
+400 61.997;
+600 85.53;
+800 112.107;
+1000 143.769];
+x = data(:,1);
+y = data(:,2);
 [xData, yData] = prepareCurveData( x, y );
 
 % Set up fittype and options.
@@ -21,21 +21,21 @@ ft = fittype( 'poly1' );
 % Fit model to data.
 [fitresult, gof] = fit( xData, yData, ft );
 
-data2 = ["circle" 1 14.944;
-"circle" 2 16.657;
-"circle" 5 18.268;
-"circle" 10 22.456;
-"circle" 20 27.708;
-"circle" 50 37.328;
-"circle" 100 41.65;
-"circle" 200 53.897;
-"circle" 400 73.713;
-"circle" 600 97.302;
-"circle" 800 114.426;
-"circle" 1000 130.282];
+data2 = [1 14.944;
+2 16.657;
+5 18.268;
+10 22.456;
+20 27.708;
+50 37.328;
+100 41.65;
+200 53.897;
+400 73.713;
+600 97.302;
+800 114.426;
+1000 130.282];
 
-x2 = data2(:,2);
-y2 = data2(:,3);
+x2 = data2(:,1);
+y2 = data2(:,2);
 [x2Data, y2Data] = prepareCurveData( x2, y2 );
 
 % Set up fittype and options.
@@ -44,21 +44,21 @@ ft2 = fittype( 'poly1' );
 % Fit model to data.
 [fitresult2, gof] = fit( x2Data, y2Data, ft2 );
 
-data3 = ["diagonal" 1 32.258;
-"diagonal" 2 34.474;
-"diagonal" 5 39.208;
-"diagonal" 10 48.409;
-"diagonal" 20 53.925;
-"diagonal" 50 66.801;
-"diagonal" 100 76.019;
-"diagonal" 200 94.605;
-"diagonal" 400 115.232;
-"diagonal" 600 133.481;
-"diagonal" 800 167.199;
-"diagonal" 1000 172.157];
+data3 = [1 32.258;
+2 34.474;
+5 39.208;
+10 48.409;
+20 53.925;
+50 66.801;
+100 76.019;
+200 94.605;
+400 115.232;
+600 133.481;
+800 167.199;
+1000 172.157];
 
-x3 = data3(:,2);
-y3 = data3(:,3);
+x3 = data3(:,1);
+y3 = data3(:,2);
 [x3Data, y3Data] = prepareCurveData( x3, y3 );
 
 % Set up fittype and options.

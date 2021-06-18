@@ -389,7 +389,7 @@ void testKNearset() {
             auto finish_time = chrono::high_resolution_clock::now();
             result += chrono::duration_cast<chrono::microseconds>(finish_time - start_time).count();
         }
-        cout << "\"random\" " << k << " " << result / 1000.0 << endl;
+        cout << "random " << k << " " << result / 1000.0 << endl;
     }
     for (int i = 0; i < 12; i = i + 1) {
         auto k = number[i];
@@ -414,7 +414,7 @@ void testKNearset() {
             auto finish_time = chrono::high_resolution_clock::now();
             result += chrono::duration_cast<chrono::microseconds>(finish_time - start_time).count();
         }
-        cout << "\"circle\" " << k << " " << result / 1000.0 << endl;
+        cout << "circle " << k << " " << result / 1000.0 << endl;
     }
 
     for (int i = 0; i < 12; i = i + 1) {
@@ -440,7 +440,7 @@ void testKNearset() {
             auto finish_time = chrono::high_resolution_clock::now();
             result += chrono::duration_cast<chrono::microseconds>(finish_time - start_time).count();
         }
-        cout << "\"diagonal\" " << k << " " << result / 1000.0 << endl;
+        cout << "diagonal " << k << " " << result / 1000.0 << endl;
     }
 
 }
