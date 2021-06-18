@@ -20,3 +20,11 @@ git clone https://github.com/eliasdaler/imgui-sfml.git
 git clone -b cmake https://github.com/eliasdaler/imgui/
 ```
 
+### 输入数据格式
+
+输入数据为.txt文件，每行包含0-1间的浮点数，允许重复
+
+
+
+#### 
+
