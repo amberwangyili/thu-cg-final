@@ -1,4 +1,4 @@
-var colorFormatter = function(a, b) {
+var colorFormatter = function (a, b) {
     var r = a.red - b.red
     var g = a.green - b.green
     var b = a.blue - b.blue

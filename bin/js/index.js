@@ -10,7 +10,7 @@ var linesG, pointsG, bLinesG, bPointsG, diagonal, beginTips, pointRadius
 var width, height
 var x, y
 
-$(document).ready(function() {
+$(document).ready(function () {
     drawTree()
 })
 
@@ -22,7 +22,7 @@ function drawTree() {
         left: 0,
     };
     (width = myWidth - margin.left - margin.right),
-    (height = myHeight - margin.top - margin.bottom)
+        (height = myHeight - margin.top - margin.bottom)
     pointRadius = 6
 
     x = d3.scale.linear().range([0, width]).domain([0, 255])
@@ -67,11 +67,11 @@ function drawTree() {
 
     var label = tooltip.append('p').text('a simple tooltip')
 
-    diagonal = d3.svg.diagonal().projection(function(d) {
+    diagonal = d3.svg.diagonal().projection(function (d) {
         return [d.y, d.x]
     })
 
-    svg.on('click', function() {
+    svg.on('click', function () {
         coordinates = d3.mouse(this)
         var red = x.invert(coordinates[0])
         var green = y.invert(coordinates[1])
@@ -130,7 +130,7 @@ function updateTree(color) {
         blue: rgb.b,
     }
     var nearest = myNodeTree.nearest(search, 4)
-    nearest.sort(function(a, b) {
+    nearest.sort(function (a, b) {
         return a[1] - b[1]
     })
 
@@ -179,36 +179,36 @@ function drawDataSet(dataSubset) {
     {
         var pointsSelection = pointsG
             .selectAll('.point')
-            .data(dataSubset, function(d) {
+            .data(dataSubset, function (d) {
                 return d.hex + 'point'
             })
 
         pointsSelection
             .enter()
             .append('circle')
-            .attr('class', function(d) {
+            .attr('class', function (d) {
                 d.fresh = true
                 return 'point'
             })
             .attr('class', 'point')
-            .attr('dimension', function(d) {
+            .attr('dimension', function (d) {
                 return d.dimension
             })
             .attr('r', pointRadius)
-            .attr('cx', function(d) {
+            .attr('cx', function (d) {
                 return x(d.red)
             })
-            .attr('cy', function(d) {
+            .attr('cy', function (d) {
                 return y(d.green)
             })
-            .style('fill', function(d) {
+            .style('fill', function (d) {
                 // return d3.rgb(d.hex)
                 return '#b2b2b2'
             })
-            .style('stroke', function(d) {
+            .style('stroke', function (d) {
                 return d3.rgb(d.hex)
             })
-            .on('mouseover', function(d) {
+            .on('mouseover', function (d) {
                 if (d.fresh) return
                 var parent = d.node
                 while (parent) {
@@ -217,7 +217,7 @@ function drawDataSet(dataSubset) {
                 }
                 drawDataSet(data)
             })
-            .on('mouseout', function(d) {
+            .on('mouseout', function (d) {
                 if (d.fresh) {
                     d.fresh = false
                     return
@@ -230,7 +230,7 @@ function drawDataSet(dataSubset) {
                 drawDataSet(data)
             })
 
-        pointsSelection.style('stroke-width', function(d) {
+        pointsSelection.style('stroke-width', function (d) {
             return d.node.onAccessPath || d.node.isSearchResult ? 2 : 0
         })
 
@@ -238,32 +238,32 @@ function drawDataSet(dataSubset) {
 
         var selection = linesG
             .selectAll('.point-line')
-            .data(dataSubset, function(d) {
+            .data(dataSubset, function (d) {
                 return d.hex + 'line'
             })
 
         selection // update
-            .style('stroke-width', function(d) {
+            .style('stroke-width', function (d) {
                 return d.node.onAccessPath ? (2 * height) / 400 : height / 400
             })
             .transition()
-            .duration(function() {
+            .duration(function () {
                 return rebalancing ? speedslow : speedfast
             })
             .each('end', finishTransition)
-            .attr('x1', function(d) {
+            .attr('x1', function (d) {
                 return x(d.x1)
             })
-            .attr('y1', function(d) {
+            .attr('y1', function (d) {
                 return y(d.y1)
             })
-            .attr('x2', function(d) {
+            .attr('x2', function (d) {
                 return x(d.x2)
             })
-            .attr('y2', function(d) {
+            .attr('y2', function (d) {
                 return y(d.y2)
             })
-            .attr('stroke', function(d) {
+            .attr('stroke', function (d) {
                 if (d.dimension === 0) {
                     return 'red'
                 }
@@ -280,19 +280,19 @@ function drawDataSet(dataSubset) {
             .attr('stroke-width', height / 400)
             // .style("opacity", 0.8)
             // start all animation from point
-            .attr('x1', function(d) {
+            .attr('x1', function (d) {
                 return x(d.red)
             })
-            .attr('y1', function(d) {
+            .attr('y1', function (d) {
                 return y(d.green)
             })
-            .attr('x2', function(d) {
+            .attr('x2', function (d) {
                 return x(d.red)
             })
-            .attr('y2', function(d) {
+            .attr('y2', function (d) {
                 return y(d.green)
             })
-            .attr('stroke', function(d) {
+            .attr('stroke', function (d) {
                 if (d.dimension === 0) {
                     return 'red'
                 }
@@ -301,16 +301,16 @@ function drawDataSet(dataSubset) {
                 }
             })
             .transition()
-            .attr('x1', function(d) {
+            .attr('x1', function (d) {
                 return x(d.x1)
             })
-            .attr('y1', function(d) {
+            .attr('y1', function (d) {
                 return y(d.y1)
             })
-            .attr('x2', function(d) {
+            .attr('x2', function (d) {
                 return x(d.x2)
             })
-            .attr('y2', function(d) {
+            .attr('y2', function (d) {
                 return y(d.y2)
             })
 
